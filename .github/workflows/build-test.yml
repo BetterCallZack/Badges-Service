@@ -1,11 +1,3 @@
-name: Build and Test
-
-on:
-  push:
-    branches: [ feature/*,bugfix/*,hotfix/*,refactor/* ]
-  pull_request:
-    branches: [ develop, main ]
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -27,6 +19,12 @@ jobs:
     - name: Run tests
       run: mvn test
     
+    - name: Generate JaCoCo Coverage Report
+      run: mvn jacoco:report
+    
+    - name: Run PMD Analysis
+      run: mvn pmd:pmd
+    
     - name: Cache Maven packages
       uses: actions/cache@v3
       with:
@@ -34,9 +32,8 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     
-    - name: Upload build artifacts
+    - name: Upload Build Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: app-jar
+        name: build-artifact
         path: target/*.jar
-        retention-days: 3
