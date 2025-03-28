@@ -6,9 +6,9 @@ on:
       - '*'
   pull_request:
     branches:
-      - develop
       - main
-
+      - develop
+      
 jobs:
   validate-branch-name:
     runs-on: ubuntu-latest
